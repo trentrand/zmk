@@ -195,6 +195,7 @@ int pmw33xx_spi_init(const struct device *dev) {
 
     int err;
     err = gpio_pin_configure(cs_gpio_cfg->port, cs_gpio_cfg->pin, GPIO_OUTPUT_ACTIVE);
+    LOG_DBG("pmw33xx spi init");
     if (err) {
         LOG_ERR("could configure cs pin %d", err);
         return -EIO;
@@ -206,17 +207,22 @@ static int pmw33xx_sample_fetch(const struct device *dev, enum sensor_channel ch
     struct pmw33xx_data *data = dev->data;
     struct pmw33xx_motion_burst burst;
 
-    if (chan != SENSOR_CHAN_ALL && chan != SENSOR_CHAN_POS_DX && chan != SENSOR_CHAN_POS_DY)
+    if (chan != SENSOR_CHAN_ALL && chan != SENSOR_CHAN_POS_DX && chan != SENSOR_CHAN_POS_DY) {
+        LOG_DBG("Fetching sensor data error");
         return -ENOTSUP;
+    }
 
     int err = pmw33xx_read_motion_burst(dev, &burst);
     if (err) {
+        LOG_DBG("Fetching sensor data error");
         return err;
     }
     if (chan == SENSOR_CHAN_ALL || chan == SENSOR_CHAN_POS_DX)
         data->dx += burst.dx;
     if (chan == SENSOR_CHAN_ALL || chan == SENSOR_CHAN_POS_DY)
         data->dy += burst.dy;
+
+    LOG_DBG("Fetching sensor data for channel %d", chan);
     return 0;
 }
 
@@ -274,6 +280,7 @@ static int pmw33xx_init_chip(const struct device *dev) {
     pmw33xx_cs_select(cs_gpio_cfg, 1);
     k_sleep(K_MSEC(1));
 
+    LOG_DBG("pmw33xx init chip");
     int err = pmw33xx_write_reg(dev, PMW33XX_REG_PWR_UP_RST, PMW33XX_RESET_CMD);
     if (err) {
         LOG_ERR("could not reset %d", err);
