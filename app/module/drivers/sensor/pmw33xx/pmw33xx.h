@@ -6,11 +6,11 @@
 #ifndef ZEPHYR_DRIVERS_SENSOR_PIXART_PMW33XX_H_
 #define ZEPHYR_DRIVERS_SENSOR_PIXART_PMW33XX_H_
 
-#include <drivers/sensor.h>
+#include <zephyr/drivers/sensor.h>
 #include <zephyr/types.h>
-#include <drivers/gpio.h>
-#include <sys/util.h>
-#include <drivers/spi.h>
+#include <zephyr/drivers/gpio.h>
+#include <zephyr/sys/util.h>
+#include <zephyr/drivers/spi.h>
 
 #define PMW33XX_WR_MASK 0x80
 #define PMW33XX_RD_MASK 0x7F
