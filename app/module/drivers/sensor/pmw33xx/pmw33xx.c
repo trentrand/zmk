@@ -14,7 +14,6 @@
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/sys/__assert.h>
-#include <zephyr/logging/log.h>
 #ifdef CONFIG_PMW33XX_3389
 #include <pmw3389_srom.h>
 #elif CONFIG_PMW33XX_3360
@@ -23,7 +22,7 @@
 
 #include "pmw33xx.h"
 
-LOG_MODULE_REGISTER(PMW33XX, CONFIG_SENSOR_LOG_LEVEL);
+// LOG_MODULE_REGISTER(PMW33XX, CONFIG_SENSOR_LOG_LEVEL);
 #define PMW33XX_PID COND_CODE_1(CONFIG_PMW33XX_3389, (PMW33XX_3389_PID), (PMW33XX_3360_PID))
 #define PMW33XX_CPI_MAX                                                                            \
     COND_CODE_1(CONFIG_PMW33XX_3389, (PMW33XX_3389_CPI_MAX), (PMW33XX_3360_CPI_MAX))
@@ -341,7 +340,7 @@ static int pmw33xx_init(const struct device *dev) {
 
     data->bus = device_get_binding(config->bus_name);
     if (!data->bus) {
-        LOG_DBG("master not found: %s", log_strdup(config->bus_name));
+        LOG_DBG("master not found: %s", config->bus_name);
         return -EINVAL;
     }
 
